@@ -22,7 +22,7 @@
     const statusDiv = document.getElementById('status');
 
     if (venture_id) {
-      statusDiv.textContent = `Found venture_id: ${venture_id}. Sending to Zapier...`;
+      statusDiv.textContent = 'Found venture_id: ${venture_id}. Sending to Zapier...';
 
       fetch('https://hooks.zapier.com/hooks/catch/10801929/uz9j5rj', {
         method: 'POST',
@@ -31,13 +31,13 @@
       })
       .then(res => {
         if (res.ok) {
-          statusDiv.textContent = `venture_id ${venture_id} sent to Zapier successfully!`;
+          statusDiv.textContent = 'venture_id ${venture_id} sent to Zapier successfully!';
         } else {
-          statusDiv.textContent = `Error: Zapier webhook returned status ${res.status}.`;
+          statusDiv.textContent = 'Error: Zapier webhook returned status ${res.status}.';
         }
       })
       .catch(err => {
-        statusDiv.textContent = `Error sending to Zapier: ${err}`;
+        statusDiv.textContent = 'Error sending to Zapier: ${err}';
       });
     } else {
       statusDiv.textContent = 'No venture_id parameter detected in the URL!';
