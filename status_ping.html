@@ -5,24 +5,34 @@
   <title>Venture Zapier Webhook Demo</title>
   <style>
     body { font-family: sans-serif; margin: 2em; }
-    #status { margin-top: 1em; color: #05668d; }
+    #status { margin-top: 1em; color: #05668d; white-space: pre-line; }
+    .status-line { margin-bottom: 0.5em; }
   </style>
 </head>
 <body>
   <h1>Zapier Venture Webhook Demo</h1>
-  <div id="status">Checking for venture_id in the URL...</div>
+  <div id="status"></div>
 
   <script>
+    function addStatusLine(message) {
+      const statusDiv = document.getElementById('status');
+      const line = document.createElement('div');
+      line.textContent = message;
+      line.className = 'status-line';
+      statusDiv.appendChild(line);
+    }
+
     function getParam(param) {
       const url = new URL(window.location.href);
       return url.searchParams.get(param);
     }
 
+    addStatusLine('Checking for venture_id in the URL...');
+
     const venture_id = getParam('venture_id');
-    const statusDiv = document.getElementById('status');
 
     if (venture_id) {
-      statusDiv.textContent = 'Found venture_id: ${venture_id}. Sending to Zapier...';
+      addStatusLine(`Found venture_id: ${venture_id}. Sending to Zapier...`);
 
       fetch('https://hooks.zapier.com/hooks/catch/10801929/uz9j5rj', {
         method: 'POST',
@@ -31,16 +41,16 @@
       })
       .then(res => {
         if (res.ok) {
-          statusDiv.textContent = 'venture_id ${venture_id} sent to Zapier successfully!';
+          addStatusLine(`venture_id ${venture_id} sent to Zapier successfully!`);
         } else {
-          statusDiv.textContent = 'Error: Zapier webhook returned status ${res.status}.';
+          addStatusLine(`Error: Zapier webhook returned status ${res.status}.`);
         }
       })
       .catch(err => {
-        statusDiv.textContent = 'Error sending to Zapier: ${err}';
+        addStatusLine(`Error sending to Zapier: ${err}`);
       });
     } else {
-      statusDiv.textContent = 'No venture_id parameter detected in the URL!';
+      addStatusLine('No venture_id parameter detected in the URL!');
     }
   </script>
 </body>
